@@ -4,29 +4,22 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                echo "Cloning repository..."
-                git url: 'https://github.com/AnshuKumar380/todo-app.git', branch: 'main', credentialsId: 'Anshu'
-
-
+                echo 'Cloning repository...'
+                git url: 'https://github.com/AnshuKumar380/Jenkins.git', branch: 'main', credentialsId: 'Anshu'
             }
         }
 
         stage('Deploy ToDo App') {
             steps {
-                echo "Deploying ToDo App to /var/www/html..."
-
-                // Clear old files (optional but clean)
-                sh 'sudo rm -rf /var/www/html/*'
-
-                // Copy new files (ensure only public files are copied)
-                sh 'sudo cp -r * /var/www/html/'
+                echo "Deploying ToDo App..."
+                sh 'sudo cp -r TodoApp/* /var/www/html/'
             }
         }
     }
 
     post {
         success {
-            echo '✅ Deployment Successful 🎉'
+            echo '🎉 Deployment Successful'
         }
         failure {
             echo '❌ Deployment Failed. Please check the logs.'
