@@ -4,14 +4,21 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/AnshuKumar380/todo-app.git'
+                echo "Cloning repository..."
+                git url: 'https://github.com/AnshuKumar380/todo-app.git', branch: 'main', credentialsId: 'Anshu'
+
+
             }
         }
 
         stage('Deploy ToDo App') {
             steps {
-                echo "Deploying ToDo App..."
-                // Copy your HTML to a web server directory (like /var/www/html)
+                echo "Deploying ToDo App to /var/www/html..."
+
+                // Clear old files (optional but clean)
+                sh 'sudo rm -rf /var/www/html/*'
+
+                // Copy new files (ensure only public files are copied)
                 sh 'sudo cp -r * /var/www/html/'
             }
         }
@@ -19,10 +26,10 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment Successful 🎉'
+            echo '✅ Deployment Successful 🎉'
         }
         failure {
-            echo 'Deployment Failed ❌'
+            echo '❌ Deployment Failed. Please check the logs.'
         }
     }
 }
